@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getItems } from '../async-mocks/productsData';
 import ItemDetailContainer from './ItemDetailContainer';
-
-import setCompletoImage from '../assets/imgproduct/set_completo.jpg';
-import mateImperialImage from '../assets/imgproduct/mate_imperial.jpg';
-import mateTorpedoImage from '../assets/imgproduct/mate_torpedo.jpg';
-import mateCamioneroImage from '../assets/imgproduct/mate_camionero.jpg';
 
 const ItemListContainer = () => {
   const [items, setItems] = useState([]);
@@ -14,31 +8,26 @@ const ItemListContainer = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const data = await getItems();
+        const response = await fetch('http://localhost:8080/api/data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch items');
+        }
+        const data = await response.json();
         setItems(data);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching items:', error);
+        setIsLoading(false); // Si hay un error, detener el indicador de carga
       }
     };
 
-    fetchItems();
-  }, []);
+    fetchItems(); // Llamada a la función de carga al montar el componente
 
-  const getProductImage = (productId) => {
-    switch (productId) {
-      case 1:
-        return setCompletoImage;
-      case 2:
-        return mateImperialImage;
-      case 3:
-        return mateTorpedoImage;
-      case 4:
-        return mateCamioneroImage;
-      default:
-        return null;
-    }
-  };
+    // Agregamos un cleanup para cancelar la solicitud en caso de que el componente se desmonte antes de que se complete
+    return () => {
+      // Cancelar la solicitud fetch si aún está en curso
+    };
+  }, []); // Este efecto solo se ejecuta una vez al montar el componente, por lo que no tiene dependencias
 
   return (
     <div className="container">
@@ -49,7 +38,7 @@ const ItemListContainer = () => {
         <div className="row">
           {items.map((item) => (
             <div key={item.id} className="col-lg-4 col-md-6">
-              <ItemDetailContainer product={item} productImage={getProductImage(item.id)} />
+              <ItemDetailContainer product={item} />
             </div>
           ))}
         </div>
@@ -59,4 +48,3 @@ const ItemListContainer = () => {
 };
 
 export default ItemListContainer;
-
