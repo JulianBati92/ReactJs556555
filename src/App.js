@@ -5,10 +5,26 @@ import Footer from './Components/Footer';
 import ItemListContainer from './Components/ItemListContainer';
 import ItemDetailContainer from './Components/ItemDetailContainer';
 import Formulario from './Components/Form';
-import { CartContextProvider } from './Components/CartContext'; // Importar el CartContextProvider
+import { CartContextProvider } from './Components/CartContext'; 
 import Checkout from './Components/Checkout';
+import axios from "axios";
 
 function App() {
+
+  const [products, setProducts] = useState([]);
+  const [prev, setPrev] = useState(null);
+  const [next, setNext] = useState(null);
+  useEffect(() => {
+    axios("http://localhost:8080/api/events")
+      .then((res) => {
+        console.log(res.data.response);
+        setProducts(res.data.response.docs);
+        setPrev(res.data.response.prevPage);
+        setNext(res.data.response.nextPage);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <CartContextProvider>
       <Router>
