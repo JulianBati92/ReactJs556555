@@ -10,19 +10,19 @@ import Checkout from './Components/Checkout';
 
 function App() {
 
-  const [products, setProducts] = useState([]);
-  const [prev, setPrev] = useState(null);
-  const [next, setNext] = useState(null);
-  useEffect(() => {
-    axios("http://localhost:8080/api/events")
-      .then((res) => {
-        console.log(res.data.response);
-        setProducts(res.data.response.docs);
-        setPrev(res.data.response.prevPage);
-        setNext(res.data.response.nextPage);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  // const [products, setProducts] = useState([]);
+  // const [prev, setPrev] = useState(null);
+  // const [next, setNext] = useState(null);
+  // useEffect(() => {
+  //   axios("http://localhost:8080/api/events")
+  //     .then((res) => {
+  //       console.log(res.data.response);
+  //       setProducts(res.data.response.docs);
+  //       setPrev(res.data.response.prevPage);
+  //       setNext(res.data.response.nextPage);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   return (
     <CartContextProvider>
