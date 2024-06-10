@@ -7,7 +7,6 @@ import ItemDetailContainer from './Components/ItemDetailContainer';
 import Formulario from './Components/Form';
 import { CartContextProvider } from './Components/CartContext'; 
 import Checkout from './Components/Checkout';
-import axios from "axios";
 
 function App() {
 
